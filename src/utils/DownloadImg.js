@@ -1,21 +1,18 @@
-export const downloadImage = (imageUrl) => {
-  return new Promise((resolve, reject) => {
-    const link = document.createElement('a');
-    link.href = imageUrl;
-    link.download = "pepe.jpg"; // Nombre de archivo deseado para la imagen
+export const downloadImage = (imageUrl, imageName) => {
+  fetch(imageUrl)
+    .then((response) => response.blob())
+    .then((blob) => {
+  
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = imageName;
 
-    document.body.appendChild(link);
+      document.body.appendChild(link);
+      link.click();
 
-    link.addEventListener('click', () => {
       document.body.removeChild(link);
-      resolve();
+    })
+    .catch((error) => {
+      console.error('Error descargando la imagen:', error);
     });
-
-    link.addEventListener('error', (error) => {
-      document.body.removeChild(link);
-      reject(error);
-    });
-
-    link.click();
-  });
 };

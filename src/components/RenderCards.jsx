@@ -1,7 +1,7 @@
-
 import { useInfiniteQuery } from "react-query";
-import { useEffect, useRef} from "react";
+import { useEffect, useRef } from "react";
 import Card from "./Card";
+import Loader from "./Loader";
 
 function InfiniteScroll() {
   const fetchData = async (pageParam = 1) => {
@@ -12,7 +12,7 @@ function InfiniteScroll() {
     return response.json();
   };
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage,} =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery(["items"], ({ pageParam }) => fetchData(pageParam), {
       getNextPageParam: (lastPage) => {
         console.log();
@@ -25,14 +25,15 @@ function InfiniteScroll() {
   const observer = useRef();
 
   useEffect(() => {
-    observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-        fetchNextPage();
-      }
-    });
+    const sentinel = document.querySelector("#sentinel");
+    if (sentinel) {
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      });
 
-    if (observer.current) {
-      observer.current.observe(document.querySelector("#sentinel"));
+      observer.current.observe(sentinel);
     }
 
     return () => {
@@ -41,11 +42,13 @@ function InfiniteScroll() {
       }
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  if (isLoading) {
+    return <Loader />;
+  }
 
-  
   return (
     <div className="flex flex-wrap justify-center gap-4 w-full ">
-      <div className="   bg-black/90 w-[670px] p-0 m-0 flex justify-start rounded-lg shadow-md object-cover flex flex-col justify-start p-10">
+      <div className="bg-black/90 w-[670px] p-0 m-0 flex justify-start rounded-lg shadow-md object-cover flex flex-col justify-start p-10">
         <h1 className="text-2xl font-bold text-white mb-4">
           Featured Articles
         </h1>
@@ -53,14 +56,12 @@ function InfiniteScroll() {
           Discover information, guides, tutorials, and in-depth analysis on
           various topics. Created by the community, for the community.
         </p>
-        <button className=" bg-white text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline  w-72">
+        <button className="bg-white text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-72">
           Explore All Articles
         </button>
       </div>
       {data?.pages?.map((el) =>
-        el.items?.map((item) => (
-          <Card key={item.id} item={item}/>
-        ))
+        el.items?.map((item) => <Card key={item.id} item={item} />)
       )}
 
       <div id="sentinel" style={{ height: "1px" }}></div>
