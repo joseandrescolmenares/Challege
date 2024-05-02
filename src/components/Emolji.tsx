@@ -1,4 +1,3 @@
-
 function formatNumber(num) {
   if (num >= 1000) {
     return (num / 1000).toFixed(1) + "k";
@@ -6,43 +5,29 @@ function formatNumber(num) {
   return num;
 }
 
+function renderEmoji(name, count, label) {
+  return (
+    <span className="text-white text-xs p-1" role="img" aria-label={label}>
+      {formatNumber(count)} {name}
+    </span>
+  );
+}
+
 function Emolji({ item }) {
+  const emojiMappings = {
+    commentCount: "💬",
+    cryCount: "😢",
+    dislikeCount: "😠",
+    heartCount: "❤️",
+    laughCount: "😄",
+    likeCount: "👍"
+  };
+
   return (
     <div className="absolute bottom-0 left-0 m-2 right-0 ">
-      <span
-        className="text-white text-xs p-1"
-        role="img"
-        aria-label="Comentarios"
-      >
-        {formatNumber(item.stats.commentCount)} 💬
-      </span>
-      <span className="text-white text-xs p-1" role="img" aria-label="Llanto">
-        {formatNumber(item.stats.cryCount)} 😢
-      </span>
-      <span
-        className="text-white text-xs p-1"
-        role="img"
-        aria-label="Disgusto"
-      >
-        {formatNumber(item.stats.dislikeCount)} 😠
-      </span>
-      <span
-        className="text-white text-xs p-1"
-        role="img"
-        aria-label="Corazón"
-      >
-        {formatNumber(item.stats.heartCount)} ❤️
-      </span>
-      <span className="text-white text-xs p-2" role="img" aria-label="Risa">
-        {formatNumber(item?.stats.laughCount)} 😄
-      </span>
-      <spa
-        className="text-white text-xs p-1"
-        role="img"
-        aria-label="Me gusta"
-      >
-        {formatNumber(item.stats.likeCount)} 👍
-      </spa>
+      {Object.entries(item.stats).map(([key, value]) =>
+        renderEmoji(emojiMappings[key], value, key)
+      )}
     </div>
   );
 }

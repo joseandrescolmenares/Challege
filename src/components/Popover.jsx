@@ -1,8 +1,8 @@
 import Icon from "../../public/icons.png";
 import { downloadImage } from "../utils/DownloadImg";
-import {useState} from "react"
+import { useState } from "react";
 
-function Popover({ imageUrl }) {
+function Popover({ imageUrl, removeItem, id }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const togglePopover = () => {
@@ -37,6 +37,7 @@ function Popover({ imageUrl }) {
               href="#"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
               role="menuitem"
+              onClick={() => removeItem(id)}
             >
               Delete
             </a>

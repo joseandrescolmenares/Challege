@@ -1,16 +1,14 @@
-
 import Popover from "./Popover";
 import Emolji from "./Emolji";
 
-
-const Card = ({item}) => {
+const Card = ({ item, removeItem }) => {
   return (
     <div key={item} className="relative">
       <img
         className=" flex w-[330px] h-[380px] rounded-lg shadow-md object-cover "
         src={item.url}
       />
-      <Popover imageUrl={item.url} />
+      <Popover imageUrl={item.url} removeItem={removeItem} id={item.id} />
       <div className="absolute bottom-1 left-0 ">
         <p className=" m-8 text-white text-sm"> {item.username}</p>
       </div>
