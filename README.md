@@ -1,15 +1,13 @@
 # Challenge
 
-estuvo muy bueno, gracias por el challenge
-
+¡Estuvo muy bueno, gracias por el challenge!
 
 ## Instalación
 
-Instrucciones de instalación.
+1. Clona este repositorio.
+2. Ejecuta `npm install` para instalar las dependencias.
+3. Ejecuta `npm run dev` para iniciar el servidor de desarrollo.
 
-```bash
-npm install
+aca el link del deploy 
 
-
-```bash
-npm run dev
+https://challege.vercel.app/
