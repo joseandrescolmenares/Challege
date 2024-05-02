@@ -1,14 +1,13 @@
-
-import InfiniteScroll from './components/InfiniteScroll'
-import './App.css'
+import InfiniteScroll from "./components/RenderCards";
+import "./App.css";
 
 function App() {
-
   return (
     <>
-     <InfiniteScroll/>
+  
+      <InfiniteScroll />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

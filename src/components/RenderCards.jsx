@@ -1,6 +1,7 @@
-//
+
 import { useInfiniteQuery } from "react-query";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef} from "react";
+import Card from "./Card";
 
 function InfiniteScroll() {
   const fetchData = async (pageParam = 1) => {
@@ -11,7 +12,7 @@ function InfiniteScroll() {
     return response.json();
   };
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage,} =
     useInfiniteQuery(["items"], ({ pageParam }) => fetchData(pageParam), {
       getNextPageParam: (lastPage) => {
         console.log();
@@ -41,13 +42,27 @@ function InfiniteScroll() {
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-console.log(data)
-
+  
   return (
-    <div>
+    <div className="flex flex-wrap justify-center gap-4 w-full ">
+      <div className="   bg-black/90 w-[670px] p-0 m-0 flex justify-start rounded-lg shadow-md object-cover flex flex-col justify-start p-10">
+        <h1 className="text-2xl font-bold text-white mb-4">
+          Featured Articles
+        </h1>
+        <p className="text-base text-white mb-6">
+          Discover information, guides, tutorials, and in-depth analysis on
+          various topics. Created by the community, for the community.
+        </p>
+        <button className=" bg-white text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline  w-72">
+          Explore All Articles
+        </button>
+      </div>
       {data?.pages?.map((el) =>
-        el.items?.map((item) => <img style={{width:`${item.width}px`}}  key={item} src={item.url} />)
+        el.items?.map((item) => (
+          <Card key={item.id} item={item}/>
+        ))
       )}
+
       <div id="sentinel" style={{ height: "1px" }}></div>
       {isFetchingNextPage && <div>Cargando...</div>}
     </div>
